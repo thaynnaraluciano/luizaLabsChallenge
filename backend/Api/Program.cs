@@ -1,7 +1,9 @@
 using Infrastructure.Data.Sql;
 using Microsoft.EntityFrameworkCore;
-using MediatR;
 using Domain.Commands.v1.CreateUser;
+using Domain.Interfaces.v1.Repositories.Sql;
+using Infrastructure.Data.Sql.v1;
+using Domain.MapperProfiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<SqlDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(CreateUserCommandHandler).Assembly));
+builder.Services.AddAutoMapper(typeof(UserProfile));
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 

@@ -7,6 +7,6 @@ namespace Infrastructure.Data.Sql
     {
         public SqlDbContext(DbContextOptions options) : base(options) { }
 
-        public DbSet<UserEntity> User {  get; set; }
+        public DbSet<UserEntity> Users {  get; set; }
     }
 }

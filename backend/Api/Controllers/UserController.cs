@@ -1,6 +1,7 @@
 ﻿using Domain.Commands.v1.CreateUser;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 
 namespace Api.Controllers
@@ -19,11 +20,21 @@ namespace Api.Controllers
         }
 
         [HttpPost("create")]
-        [ProducesResponseType(200)]
         public async Task<IActionResult> CreateUser(CreateUserCommand command)
         {
-            var retorno = await _mediator.Send(command);
-            return Ok(retorno);
+            try
+            {
+                await _mediator.Send(command);
+                return Ok("Usuário cadastrado com sucesso!");
+            }
+            catch (ValidationException ex) 
+            {
+                return StatusCode(400, ex.ValidationResult.ErrorMessage);
+            }
+            catch (Exception ex) 
+            {
+                return StatusCode(ex.HResult, ex.Message);            
+            }
         }
     }
 }
