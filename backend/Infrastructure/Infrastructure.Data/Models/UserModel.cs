@@ -1,6 +1,6 @@
-﻿namespace Domain.Entities.v1
+﻿namespace Infrastructure.Data.Models
 {
-    public class UserEntity
+    public class UserModel
     {
         public Guid Id { get; set; }
 

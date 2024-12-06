@@ -1,7 +1,7 @@
-﻿using Domain.Entities.v1;
-using Domain.Interfaces.v1.Repositories.Sql;
+﻿using Infrastructure.Data.Interfaces;
+using Infrastructure.Data.Models;
 
-namespace Infrastructure.Data.Sql.v1
+namespace Infrastructure.Data.Repositories
 {
     public class UserRepository : IUserRepository
     {
@@ -12,7 +12,7 @@ namespace Infrastructure.Data.Sql.v1
             _dbContext = context;
         }
 
-        public async Task CreateUser(UserEntity user)
+        public async Task CreateUser(UserModel user)
         {
             await _dbContext.AddAsync(user);
             await _dbContext.SaveChangesAsync();

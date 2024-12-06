@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Domain.Commands.v1.CreateUser;
-using Domain.Entities.v1;
+using Infrastructure.Data.Models;
 
 namespace Domain.MapperProfiles
 {
@@ -8,8 +8,8 @@ namespace Domain.MapperProfiles
     {
         public UserProfile()
         {
-            CreateMap<UserEntity, CreateUserCommand>();
-            CreateMap<CreateUserCommand, UserEntity>();
+            CreateMap<UserModel, CreateUserCommand>();
+            CreateMap<CreateUserCommand, UserModel>();
         }
     }
 }

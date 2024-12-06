@@ -1,12 +1,12 @@
-﻿using Domain.Entities.v1;
+﻿using Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Data.Sql
+namespace Infrastructure.Data
 {
     public class SqlDbContext : DbContext
     {
         public SqlDbContext(DbContextOptions options) : base(options) { }
 
-        public DbSet<UserEntity> Users {  get; set; }
+        public DbSet<UserModel> Users { get; set; }
     }
 }

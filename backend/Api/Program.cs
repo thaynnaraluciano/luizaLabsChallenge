@@ -1,9 +1,9 @@
-using Infrastructure.Data.Sql;
 using Microsoft.EntityFrameworkCore;
 using Domain.Commands.v1.CreateUser;
-using Domain.Interfaces.v1.Repositories.Sql;
-using Infrastructure.Data.Sql.v1;
 using Domain.MapperProfiles;
+using Infrastructure.Data;
+using Infrastructure.Data.Interfaces;
+using Infrastructure.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
