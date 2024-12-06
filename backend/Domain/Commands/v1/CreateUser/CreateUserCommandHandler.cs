@@ -21,8 +21,14 @@ namespace Domain.Commands.v1.CreateUser
 
         public async Task<Unit> Handle(CreateUserCommand command, CancellationToken cancellationToken = default)
         {
+            _logger.LogInformation("Creating user");
+
             var userEntity = _mapper.Map<UserModel>(command);
             await _userRepository.CreateUser(userEntity);
+
+            // TO DO: enviar email de confirmação
+
+            _logger.LogInformation("User created successfully");
             return Unit.Value;
         }
     }

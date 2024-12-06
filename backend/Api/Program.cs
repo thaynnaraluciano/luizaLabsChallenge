@@ -4,6 +4,10 @@ using Domain.MapperProfiles;
 using Infrastructure.Data;
 using Infrastructure.Data.Interfaces;
 using Infrastructure.Data.Repositories;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using MediatR;
+using Api.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +21,11 @@ builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof
 builder.Services.AddAutoMapper(typeof(UserProfile));
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IValidator<CreateUserCommand>, CreateUserCommandValidator>();
+
+builder.Services.AddFluentValidationAutoValidation();
+
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 var app = builder.Build();
 

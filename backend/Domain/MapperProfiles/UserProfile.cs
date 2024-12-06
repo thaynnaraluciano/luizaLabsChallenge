@@ -9,7 +9,9 @@ namespace Domain.MapperProfiles
         public UserProfile()
         {
             CreateMap<UserModel, CreateUserCommand>();
-            CreateMap<CreateUserCommand, UserModel>();
+            CreateMap<CreateUserCommand, UserModel>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.IsEmailConfirmed, opt => opt.Ignore());
         }
     }
 }

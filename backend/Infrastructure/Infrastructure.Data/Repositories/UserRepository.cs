@@ -17,5 +17,15 @@ namespace Infrastructure.Data.Repositories
             await _dbContext.AddAsync(user);
             await _dbContext.SaveChangesAsync();
         }
+
+        public bool UserNameAlreadyExists(string userName) 
+        {
+            return _dbContext.Users.Any(user => string.Equals(user.UserName, userName));
+        }
+
+        public bool EmailAlreadyExists(string email)
+        {
+            return _dbContext.Users.Any(user => string.Equals(user.Email, email));
+        }
     }
 }
