@@ -18,7 +18,6 @@ namespace Domain.Commands.v1.Login
 
         public LoginCommandHandler(
             ILogger<LoginCommandHandler> logger,
-            IMapper mapper,
             ICryptograpghyService cryptograpghyService,
             IUserRepository userRepository,
             ITokenService tokenService)
