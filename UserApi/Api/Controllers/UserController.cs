@@ -1,4 +1,5 @@
 ﻿using Domain.Commands.v1.CreateUser;
+using Domain.Commands.v1.Login;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,12 +9,10 @@ namespace Api.Controllers
     [Route("api/v1/user")]
     public class UserController : ControllerBase
     {
-        private readonly ILogger<UserController> _logger;
         private readonly IMediator _mediator;
 
-        public UserController(ILogger<UserController> logger, IMediator mediator)
+        public UserController(IMediator mediator)
         {
-            _logger = logger;
             _mediator = mediator;
         }
 
@@ -22,6 +21,12 @@ namespace Api.Controllers
         {
             await _mediator.Send(command);
             return Ok("Usuário cadastrado com sucesso!");
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginCommand command)
+        {
+            return Ok(await _mediator.Send(command));
         }
     }
 }

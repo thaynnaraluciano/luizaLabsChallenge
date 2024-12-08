@@ -5,9 +5,9 @@ USE LuizaLabsChallenge;
 GO
 
 CREATE TABLE Users ( 
-    id varchar(216) PRIMARY KEY,
+    id UNIQUEIDENTIFIER PRIMARY KEY,
     username varchar(216) UNIQUE NOT NULL,
-    email varchar(216) NOT NULL,
+    email varchar(216) UNIQUE NOT NULL,
     password varchar(216) NOT NULL,
-    isEmailConfirmed char(1) NOT NULL default(0))
+    isEmailConfirmed BIT NOT NULL default(0))
 GO

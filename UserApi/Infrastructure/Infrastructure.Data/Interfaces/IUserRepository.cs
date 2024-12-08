@@ -9,5 +9,7 @@ namespace Infrastructure.Data.Interfaces
         bool UserNameAlreadyExists(string userName);
 
         bool EmailAlreadyExists(string email);
+
+        UserModel? GetUserByUsername(string? username);
     }
 }

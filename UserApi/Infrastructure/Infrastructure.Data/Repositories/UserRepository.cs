@@ -27,5 +27,13 @@ namespace Infrastructure.Data.Repositories
         {
             return _dbContext.Users.Any(user => string.Equals(user.Email, email));
         }
+
+        public UserModel? GetUserByUsername(string? username)
+        {
+            if (username != null)
+                return _dbContext.Users.FirstOrDefault(x => string.Equals(x.UserName, username));
+
+            return null;
+        }
     }
 }
