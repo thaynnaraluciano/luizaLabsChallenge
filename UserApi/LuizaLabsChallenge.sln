@@ -3,23 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backend", "backend", "{5BFF7378-1993-417C-860E-169083218DCF}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{5C2621C1-FB29-4BFE-A084-AE0F07C7D065}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Data", "backend\Infrastructure\Infrastructure.Data\Infrastructure.Data.csproj", "{A9BDE128-398A-481D-9A10-9E449E28A1E6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Data", "Infrastructure\Infrastructure.Data\Infrastructure.Data.csproj", "{A9BDE128-398A-481D-9A10-9E449E28A1E6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{1E2A6A3F-080D-4FB8-BF67-5F7FAAF7A276}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "backend\Domain\Domain.csproj", "{C21D3CBD-7F48-4F64-B48B-DE4B8F3823FB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{C21D3CBD-7F48-4F64-B48B-DE4B8F3823FB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{734F992F-5318-4447-8742-9132778483F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "backend\Api\Api.csproj", "{7FF02FD3-1E34-4B4D-8934-F881AD199095}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{7FF02FD3-1E34-4B4D-8934-F881AD199095}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{52A27C96-3379-4ADB-86A1-9DCBE6515CE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "backend\Tests\Tests.csproj", "{19A755AC-9408-4D80-BCE1-19E5B09B1231}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{19A755AC-9408-4D80-BCE1-19E5B09B1231}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
