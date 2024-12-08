@@ -8,6 +8,8 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Api.Utils;
+using Infrastructure.Services.Interfaces.v1;
+using Infrastructure.Services.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +28,8 @@ builder.Services.AddScoped<IValidator<CreateUserCommand>, CreateUserCommandValid
 builder.Services.AddFluentValidationAutoValidation();
 
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+builder.Services.AddSingleton<ICryptograpghyService, CryptograpghyService>();
 
 var app = builder.Build();
 
