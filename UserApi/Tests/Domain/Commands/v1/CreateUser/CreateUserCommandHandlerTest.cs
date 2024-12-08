@@ -46,7 +46,7 @@ namespace Tests.Domain.Commands.v1.CreateUser
         }
 
         [TestCase("", "", "", Category = "Unit", TestName = "Should CreateUserCommandHandler handle command throw exception")]
-        public async Task Should_CreateUserCommandHandler_Handle_Exception(string username, string email, string password)
+        public async Task Should_CreateUserCommandHandler_EmptyProps_Handle_Exception(string username, string email, string password)
         {
             var command = CreateUserCommandMock.GetInvalidInstance(username, email, password);
 
@@ -56,6 +56,77 @@ namespace Tests.Domain.Commands.v1.CreateUser
             });
 
             StringAssert.Contains("O username deve ser informado", exception.Message);
+            StringAssert.Contains("O email deve ser informado", exception.Message);
+            StringAssert.Contains("A senha deve ser informada", exception.Message);
+        }
+
+        [TestCase("ab", "email@gmail.com", "str0ngPassword!", Category = "Unit", TestName = "Should CreateUserCommandHandler handle command throw exception")]
+        public async Task Should_CreateUserCommandHandler_InvalidUsername_Handle_Exception(string username, string email, string password)
+        {
+            var command = CreateUserCommandMock.GetInvalidInstance(username, email, password);
+
+            var exception = Assert.Throws<ValidationException>(() =>
+            {
+                ValidationBehavior.Handle(command, _nextMock.Object, CancellationToken.None);
+            });
+
+            StringAssert.Contains("O username deve possuir pelo menos 3 caracteres", exception.Message);
+        }
+
+        [TestCase("unavailableUsername", "email@gmail.com", "str0ngPassword!", Category = "Unit", TestName = "Should CreateUserCommandHandler handle command throw exception")]
+        public async Task Should_CreateUserCommandHandler_UnavailableUsername_Handle_Exception(string username, string email, string password)
+        {
+            var command = CreateUserCommandMock.GetInvalidInstance(username, email, password);
+
+            _mockUserRepository.Setup(x => x.UserNameAlreadyExists(It.IsAny<string>())).Returns(true);
+
+            var exception = Assert.Throws<ValidationException>(() =>
+            {
+                ValidationBehavior.Handle(command, _nextMock.Object, CancellationToken.None);
+            });
+
+            StringAssert.Contains("O username informado não está disponível", exception.Message);
+        }
+
+        [TestCase("availableUsername", "invalidEmail", "str0ngPassword!", Category = "Unit", TestName = "Should CreateUserCommandHandler handle command throw exception")]
+        public async Task Should_CreateUserCommandHandler_InvalidEmail_Handle_Exception(string username, string email, string password)
+        {
+            var command = CreateUserCommandMock.GetInvalidInstance(username, email, password);
+
+            var exception = Assert.Throws<ValidationException>(() =>
+            {
+                ValidationBehavior.Handle(command, _nextMock.Object, CancellationToken.None);
+            });
+
+            StringAssert.Contains("O formato do email informado é inválido", exception.Message);
+        }
+
+        [TestCase("availableUsername", "unavailableEmail", "str0ngPassword!", Category = "Unit", TestName = "Should CreateUserCommandHandler handle command throw exception")]
+        public async Task Should_CreateUserCommandHandler_UnavailableEmail_Handle_Exception(string username, string email, string password)
+        {
+            var command = CreateUserCommandMock.GetInvalidInstance(username, email, password);
+
+            _mockUserRepository.Setup(x => x.EmailAlreadyExists(It.IsAny<string>())).Returns(true);
+
+            var exception = Assert.Throws<ValidationException>(() =>
+            {
+                ValidationBehavior.Handle(command, _nextMock.Object, CancellationToken.None);
+            });
+
+            StringAssert.Contains("O email informado já está cadastrado", exception.Message);
+        }
+
+        [TestCase("availableUsername", "email@gmail.com", "invalidPassword", Category = "Unit", TestName = "Should CreateUserCommandHandler handle command throw exception")]
+        public async Task Should_CreateUserCommandHandler_InvalidPassword_Handle_Exception(string username, string email, string password)
+        {
+            var command = CreateUserCommandMock.GetInvalidInstance(username, email, password);
+
+            var exception = Assert.Throws<ValidationException>(() =>
+            {
+                ValidationBehavior.Handle(command, _nextMock.Object, CancellationToken.None);
+            });
+
+            StringAssert.Contains("A senha deve conter pelo menos 8 caracteres, incluindo caracteres maiúsculos, minúsculos, especiais e números", exception.Message);
         }
     }
 }

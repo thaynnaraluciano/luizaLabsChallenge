@@ -10,7 +10,7 @@ namespace Tests.Domain.Mocks.CreateUser
             {
                 UserName = "validUsername",
                 Email = "valid@email.com",
-                Password = "validPassword"
+                Password = "v@l1dPassword!"
             };
         }
 
