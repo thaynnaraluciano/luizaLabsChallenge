@@ -10,22 +10,23 @@ namespace Domain.Commands.v1.Login
 {
     public class LoginCommandHandler : IRequestHandler<LoginCommand, string>
     {
-        private readonly ILogger<CreateUserCommandHandler> _logger;
+        private readonly ILogger<LoginCommandHandler> _logger;
 
-        private readonly IMapper _mapper;
+        private readonly ITokenService _tokenService;
         private readonly ICryptograpghyService _cryptograpghyService;
         private readonly IUserRepository _userRepository;
 
         public LoginCommandHandler(
-            ILogger<CreateUserCommandHandler> logger,
+            ILogger<LoginCommandHandler> logger,
             IMapper mapper,
             ICryptograpghyService cryptograpghyService,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            ITokenService tokenService)
         {
             _logger = logger;
-            _mapper = mapper;
             _cryptograpghyService = cryptograpghyService;
             _userRepository = userRepository;
+            _tokenService = tokenService;
         }
 
         public async Task<string> Handle(LoginCommand command, CancellationToken cancellationToken = default)
@@ -45,16 +46,16 @@ namespace Domain.Commands.v1.Login
             if (hashedPassword != user.Password)
                 throw new UnauthorizedAccessException("Usuário ou senha inválidos.");
 
-            var token = GenerateFakeToken(command.UserName);
+            var token = GenerateToken(command.UserName);
 
             _logger.LogInformation("Login ended successfully");
 
             return token;
         }
 
-        private string GenerateFakeToken(string username)
+        private string GenerateToken(string? username)
         {
-            return Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{DateTime.UtcNow}"));
+            return _tokenService.GenerateToken(username!);
         }
     }
 }

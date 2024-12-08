@@ -12,14 +12,13 @@ using Infrastructure.Services.Interfaces.v1;
 using Infrastructure.Services.Services;
 using Domain.Commands.v1.Login;
 using Infrastructure.Services.Services.v1;
+using CrossCutting.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddDbContext<SqlDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 #region MediatR
 builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(CreateUserCommandHandler).Assembly));
@@ -28,7 +27,6 @@ builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof
 
 #region AutoMapper
 builder.Services.AddAutoMapper(typeof(UserProfile));
-builder.Services.AddAutoMapper(typeof(LoginProfile));
 #endregion
 
 #region Validators
@@ -39,9 +37,15 @@ builder.Services.AddScoped<IValidator<LoginCommand>, LoginCommandValidator>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddSingleton<ICryptograpghyService, CryptograpghyService>();
+builder.Services.AddSingleton<ITokenService, TokenService>();
 
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+var appSettings = builder.Configuration.GetSection("Settings").Get<AppSettings>();
+AppSettings.Settings = appSettings!;
+
+builder.Services.AddDbContext<SqlDbContext>(options => options.UseSqlServer(appSettings!.ConnectionString.DefaultConnection));
 
 var app = builder.Build();
 
