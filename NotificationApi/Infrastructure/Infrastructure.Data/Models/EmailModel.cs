@@ -1,8 +1,6 @@
-﻿using MediatR;
-
-namespace Domain.Commands.v1
+﻿namespace Infrastructure.Data.Models
 {
-    public class SendEmailCommand : IRequest<Unit>
+    public class EmailModel
     {
         public string? ReceiverName { get; set; }
 
