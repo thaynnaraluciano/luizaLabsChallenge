@@ -11,7 +11,8 @@ namespace Domain.MapperProfiles
             CreateMap<UserModel, CreateUserCommand>();
             CreateMap<CreateUserCommand, UserModel>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
-                .ForMember(dest => dest.ConfirmedAt, opt => opt.Ignore());
+                .ForMember(dest => dest.ConfirmedAt, opt => opt.Ignore())
+                .ForMember(dest => dest.VerificationCode, opt => opt.Ignore());
         }
     }
 }

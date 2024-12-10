@@ -4,6 +4,8 @@ using Infrastructure.Data.Models;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Infrastructure.Services.Interfaces.v1;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace Domain.Commands.v1.CreateUser
 {
@@ -17,9 +19,9 @@ namespace Domain.Commands.v1.CreateUser
         private readonly IEmailTemplateService _emailTemplateService;
 
         public CreateUserCommandHandler(
-            ILogger<CreateUserCommandHandler> logger, 
-            IUserRepository userRepository, 
-            IMapper mapper, 
+            ILogger<CreateUserCommandHandler> logger,
+            IUserRepository userRepository,
+            IMapper mapper,
             ICryptograpghyService cryptograpghyService,
             INotificationService notificationService,
             IEmailTemplateService emailTemplateService)
@@ -39,9 +41,9 @@ namespace Domain.Commands.v1.CreateUser
             var hashedPassword = _cryptograpghyService.HashPassword(command.Password);
             command.Password = hashedPassword;
 
-            // TO DO: gerar codigo de confirmação e inserir no model pra salvar
-
             var userEntity = _mapper.Map<UserModel>(command);
+            userEntity.VerificationCode = GenerateVerificationCode(command.Email!);
+
             await _userRepository.CreateUser(userEntity);
 
             _logger.LogInformation("Sending email confirmation");
@@ -57,6 +59,22 @@ namespace Domain.Commands.v1.CreateUser
 
             _logger.LogInformation("User created successfully");
             return Unit.Value;
+        }
+
+        private string GenerateVerificationCode(string email)
+        {
+            string input = $"{email}-{Guid.NewGuid()}";
+
+            using var sha256 = SHA256.Create();
+            byte[] hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(input));
+
+            StringBuilder builder = new StringBuilder();
+            foreach (byte b in hashBytes)
+            {
+                builder.Append(b.ToString("x2"));
+            }
+
+            return builder.ToString();
         }
     }
 }

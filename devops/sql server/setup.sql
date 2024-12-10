@@ -9,5 +9,6 @@ CREATE TABLE Users (
     username varchar(216) UNIQUE NOT NULL,
     email varchar(216) UNIQUE NOT NULL,
     password varchar(216) NOT NULL,
-    confirmedAt DATETIME default(NULL))
+    confirmedAt DATETIME default(NULL),
+    verificationCode varchar(216))
 GO
