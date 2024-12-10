@@ -12,6 +12,7 @@ using Infrastructure.Services.Interfaces.v1;
 using Domain.Commands.v1.Login;
 using Infrastructure.Services.Services.v1;
 using CrossCutting.Configuration;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,10 +42,25 @@ builder.Services.AddSingleton<ITokenService, TokenService>();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
-var appSettings = builder.Configuration.GetSection("Settings").Get<AppSettings>();
-AppSettings.Settings = appSettings!;
+builder.Services.Configure<AppSettings>(builder.Configuration);
 
-builder.Services.AddDbContext<SqlDbContext>(options => options.UseSqlServer(appSettings!.ConnectionString.DefaultConnection));
+builder.Services.AddHttpClient<INotificationService, NotificationService>((provider, client) =>
+{
+    var appSettings = provider.GetRequiredService<IOptions<AppSettings>>().Value;
+
+    var notificationClient = appSettings.ServiceClientsSettings
+        .FirstOrDefault(c => c.Id == "notification");
+
+    if (notificationClient == null || string.IsNullOrWhiteSpace(notificationClient.BaseUrl))
+        throw new InvalidOperationException("Base URL para NotificationService não configurada.");
+
+    client.BaseAddress = new Uri(notificationClient.BaseUrl);
+}).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+{
+    ServerCertificateCustomValidationCallback = (message, certificate, chain, errors) => true
+});
+
+builder.Services.AddDbContext<SqlDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 

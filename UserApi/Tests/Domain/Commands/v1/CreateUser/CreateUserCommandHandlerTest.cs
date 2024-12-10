@@ -18,6 +18,7 @@ namespace Tests.Domain.Commands.v1.CreateUser
         private Mock<ILogger<CreateUserCommandHandler>> _loggerMock;
         private Mock<IUserRepository> _mockUserRepository;
         private Mock<ICryptograpghyService> _mockCryptographyService;
+        private Mock<INotificationService> _mockNotificationService;
         private CreateUserCommandHandler _handler;
         private ValidationBehavior<CreateUserCommand, Unit> ValidationBehavior;
         private Mock<RequestHandlerDelegate<Unit>> _nextMock;
@@ -27,12 +28,14 @@ namespace Tests.Domain.Commands.v1.CreateUser
             _loggerMock = new Mock<ILogger<CreateUserCommandHandler>>();
             _mockUserRepository = new Mock<IUserRepository>();
             _mockCryptographyService = new Mock<ICryptograpghyService>();
+            _mockNotificationService = new Mock<INotificationService>();
 
             return new CreateUserCommandHandler(
                 _loggerMock.Object, 
                 _mockUserRepository.Object, 
                 MappersMock.GetMock(), 
-                _mockCryptographyService.Object);
+                _mockCryptographyService.Object,
+                _mockNotificationService.Object);
         }
 
         [SetUp]

@@ -8,6 +8,6 @@ namespace CrossCutting.Configuration
 
         public JwtSettings Jwt { get; set; }
 
-        public DatabaseSettings ConnectionString { get; set; }
+        public List<ServiceClientsSettings> ServiceClientsSettings { get; set; }
     }
 }
