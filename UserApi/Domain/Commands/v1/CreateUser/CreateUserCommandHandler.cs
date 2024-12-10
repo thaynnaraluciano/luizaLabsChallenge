@@ -14,19 +14,22 @@ namespace Domain.Commands.v1.CreateUser
         private readonly IMapper _mapper;
         private readonly ICryptograpghyService _cryptograpghyService;
         private readonly INotificationService _notificationService;
+        private readonly IEmailTemplateService _emailTemplateService;
 
         public CreateUserCommandHandler(
             ILogger<CreateUserCommandHandler> logger, 
             IUserRepository userRepository, 
             IMapper mapper, 
             ICryptograpghyService cryptograpghyService,
-            INotificationService notificationService)
+            INotificationService notificationService,
+            IEmailTemplateService emailTemplateService)
         {
             _logger = logger;
             _userRepository = userRepository;
             _mapper = mapper;
             _cryptograpghyService = cryptograpghyService;
             _notificationService = notificationService;
+            _emailTemplateService = emailTemplateService;
         }
 
         public async Task<Unit> Handle(CreateUserCommand command, CancellationToken cancellationToken = default)
@@ -36,16 +39,20 @@ namespace Domain.Commands.v1.CreateUser
             var hashedPassword = _cryptograpghyService.HashPassword(command.Password);
             command.Password = hashedPassword;
 
+            // TO DO: gerar codigo de confirmação e inserir no model pra salvar
+
             var userEntity = _mapper.Map<UserModel>(command);
             await _userRepository.CreateUser(userEntity);
+
+            _logger.LogInformation("Sending email confirmation");
 
             await _notificationService.SendEmail(new SendEmailModel()
             {
                 ReceiverName = command.UserName,
-                Body = "Teste comunicacao",
-                BodyType = "plain",
                 ReceiverEmail = command.Email,
-                Subject = "Confirmação de email LuizaLabs"
+                Subject = "Confirmação de email LuizaLabs",
+                BodyType = "html",
+                Body = _emailTemplateService.GenerateConfirmationEmail(command.UserName!)
             });
 
             _logger.LogInformation("User created successfully");

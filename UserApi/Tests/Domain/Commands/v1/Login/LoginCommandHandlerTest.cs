@@ -59,7 +59,7 @@ namespace Tests.Domain.Commands.v1.Login
             var userModel = new UserModel() 
             { 
                 Email = "validEmail@gmail.com",
-                IsEmailConfirmed = true,
+                ConfirmedAt = DateTime.Now,
                 Password = hashedPassword,
                 UserName = "validUsername"
             };

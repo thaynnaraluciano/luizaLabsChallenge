@@ -19,6 +19,7 @@ namespace Tests.Domain.Commands.v1.CreateUser
         private Mock<IUserRepository> _mockUserRepository;
         private Mock<ICryptograpghyService> _mockCryptographyService;
         private Mock<INotificationService> _mockNotificationService;
+        private Mock<IEmailTemplateService> _mockEmailTemplateService;
         private CreateUserCommandHandler _handler;
         private ValidationBehavior<CreateUserCommand, Unit> ValidationBehavior;
         private Mock<RequestHandlerDelegate<Unit>> _nextMock;
@@ -35,7 +36,8 @@ namespace Tests.Domain.Commands.v1.CreateUser
                 _mockUserRepository.Object, 
                 MappersMock.GetMock(), 
                 _mockCryptographyService.Object,
-                _mockNotificationService.Object);
+                _mockNotificationService.Object,
+                _mockEmailTemplateService.Object);
         }
 
         [SetUp]

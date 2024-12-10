@@ -37,7 +37,7 @@ namespace Domain.Commands.v1.Login
             if (user == null)
                 throw new UnauthorizedAccessException("Usuário ou senha inválidos.");
 
-            if(!user.IsEmailConfirmed)
+            if(user.ConfirmedAt != null)
                 throw new UnauthorizedAccessException("Validação de email pendente.");
 
             var hashedPassword = _cryptograpghyService.HashPassword(command.Password);

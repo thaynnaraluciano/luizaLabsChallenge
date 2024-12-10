@@ -38,6 +38,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddSingleton<ICryptograpghyService, CryptograpghyService>();
 builder.Services.AddSingleton<ITokenService, TokenService>();
+builder.Services.AddSingleton<IEmailTemplateService, EmailTemplateService>();
 
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));

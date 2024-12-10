@@ -17,8 +17,15 @@ namespace Infrastructure.Services.Services.v1
 
         public async Task<bool> SendEmail(SendEmailModel request)
         {
-            var response = await _httpClient.PostAsJsonAsync(_emailEndpoint, request);
-            return response.IsSuccessStatusCode;
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync(_emailEndpoint, request);
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error while sending confirmation email: {ex.Message}");
+            }
         }
     }
 }
