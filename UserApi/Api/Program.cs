@@ -9,7 +9,6 @@ using FluentValidation.AspNetCore;
 using MediatR;
 using Api.Utils;
 using Infrastructure.Services.Interfaces.v1;
-using Infrastructure.Services.Services;
 using Domain.Commands.v1.Login;
 using Infrastructure.Services.Services.v1;
 using CrossCutting.Configuration;

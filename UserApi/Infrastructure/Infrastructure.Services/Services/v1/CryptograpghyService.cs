@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Infrastructure.Services.Services
+namespace Infrastructure.Services.Services.v1
 {
     public class CryptograpghyService : ICryptograpghyService
     {
