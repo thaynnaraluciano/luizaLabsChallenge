@@ -36,8 +36,6 @@ builder.Services.AddAutoMapper(typeof(UserProfile));
 
 #region Validators
 builder.Services.AddScoped<IValidator<CreateUserCommand>, CreateUserCommandValidator>();
-//builder.Services.AddValidatorsFromAssemblyContaining<CreateUserCommandValidator>();
-
 builder.Services.AddScoped<IValidator<LoginCommand>, LoginCommandValidator>();
 builder.Services.AddScoped<IValidator<ConfirmEmailCommand>, ConfirmEmailCommandValidator>();
 #endregion

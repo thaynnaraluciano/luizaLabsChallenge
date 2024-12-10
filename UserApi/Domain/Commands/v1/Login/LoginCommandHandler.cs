@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using CrossCutting.Exceptions;
+﻿using CrossCutting.Exceptions;
 using Infrastructure.Data.Interfaces;
 using Infrastructure.Services.Interfaces.v1;
 using MediatR;
