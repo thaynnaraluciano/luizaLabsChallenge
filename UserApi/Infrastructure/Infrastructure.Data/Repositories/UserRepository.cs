@@ -16,6 +16,8 @@ namespace Infrastructure.Data.Repositories
         {
             await _dbContext.AddAsync(user);
             await _dbContext.SaveChangesAsync();
+
+            return;
         }
 
         public bool UserNameAlreadyExists(string userName) 
@@ -34,6 +36,22 @@ namespace Infrastructure.Data.Repositories
                 return _dbContext.Users.FirstOrDefault(x => string.Equals(x.UserName, username));
 
             return null;
+        }
+
+        public UserModel? GetUserByVerificationCode(string? verificationCode)
+        {
+            if (verificationCode != null)
+                return _dbContext.Users.FirstOrDefault(x => string.Equals(x.VerificationCode, verificationCode));
+
+            return null;
+        }
+
+        public async Task ConfirmUserEmail(UserModel user)
+        {
+            _dbContext.Update(user);
+            await _dbContext.SaveChangesAsync();
+
+            return;
         }
     }
 }

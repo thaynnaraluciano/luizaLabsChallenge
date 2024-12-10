@@ -11,5 +11,9 @@ namespace Infrastructure.Data.Interfaces
         bool EmailAlreadyExists(string email);
 
         UserModel? GetUserByUsername(string? username);
+
+        UserModel? GetUserByVerificationCode(string?  verificationCode);
+
+        Task ConfirmUserEmail(UserModel user);
     }
 }

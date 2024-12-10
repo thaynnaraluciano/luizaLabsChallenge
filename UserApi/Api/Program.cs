@@ -13,6 +13,7 @@ using Domain.Commands.v1.Login;
 using Infrastructure.Services.Services.v1;
 using CrossCutting.Configuration;
 using Microsoft.Extensions.Options;
+using Domain.Commands.v1.ConfirmEmail;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,7 @@ builder.Services.AddSwaggerGen();
 #region MediatR
 builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(CreateUserCommandHandler).Assembly));
 builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(LoginCommandHandler).Assembly));
+builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(ConfirmEmailCommand).Assembly));
 #endregion
 
 #region AutoMapper
@@ -32,6 +34,7 @@ builder.Services.AddAutoMapper(typeof(UserProfile));
 #region Validators
 builder.Services.AddScoped<IValidator<CreateUserCommand>, CreateUserCommandValidator>();
 builder.Services.AddScoped<IValidator<LoginCommand>, LoginCommandValidator>();
+builder.Services.AddScoped<IValidator<ConfirmEmailCommand>, ConfirmEmailCommandValidator>();
 #endregion
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
