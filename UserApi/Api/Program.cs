@@ -5,7 +5,6 @@ using Infrastructure.Data;
 using Infrastructure.Data.Interfaces;
 using Infrastructure.Data.Repositories;
 using FluentValidation;
-using FluentValidation.AspNetCore;
 using MediatR;
 using Api.Utils;
 using Infrastructure.Services.Interfaces.v1;
@@ -27,7 +26,7 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBeh
 #region MediatR
 builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(CreateUserCommandHandler).Assembly));
 builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(LoginCommandHandler).Assembly));
-builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(ConfirmEmailCommand).Assembly));
+builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(ConfirmEmailCommandHandler).Assembly));
 #endregion
 
 #region AutoMapper

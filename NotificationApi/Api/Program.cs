@@ -1,17 +1,21 @@
 using FluentValidation;
-using FluentValidation.AspNetCore;
 using Domain.Commands.v1.SendEmail;
 using Domain.Commands.v1;
 using Infrastructure.Services.Interfaces.v1;
 using Infrastructure.Services.Services.v1;
 using Domain.MapperProfiles;
 using CrossCutting.Configuration;
+using Api.Utils;
+using MediatR;
+using CrossCutting.Exceptions.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 #region MediatR
 builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(SendEmailCommandHandler).Assembly));
@@ -26,8 +30,6 @@ builder.Services.AddScoped<IValidator<SendEmailCommand>, SendEmailCommandValidat
 #endregion
 
 builder.Services.AddSingleton<IEmailService, EmailService>();
-
-builder.Services.AddFluentValidationAutoValidation();
 
 builder.Services.Configure<AppSettings>(builder.Configuration);
 
@@ -44,5 +46,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.Run();
