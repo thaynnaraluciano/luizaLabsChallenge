@@ -41,15 +41,31 @@ namespace Infrastructure.Services.Services.v1
                         button:hover {{
                             background-color: #0056b3;
                         }}
+                        .footer {{
+                            font-size: 12px;
+                            color: #666;
+                            margin-top: 20px;
+                            text-align: center;
+                         }}
                     </style>
                 </head>
                 <body>
                     <div class=""container"">
                         <h1>{receiverName},</h1>
-                        <h2>Confirme seu email, clicando no link abaixo:</h2>
+                        <p>Confirme seu email, clicando no link abaixo:</p>
                         <a>
                             <button>Confirmar Email</button>
                         </a>
+                    </div>
+                    <div class=""footer"">
+                        <p>
+                            Este e-mail e seus anexos são confidenciais e destinados exclusivamente ao(s) destinatário(s) indicado(s).
+                            Se você recebeu esta mensagem por engano, por favor, informe o remetente imediatamente e exclua o e-mail.
+                            É proibida qualquer divulgação, cópia ou uso não autorizado do conteúdo.
+                        </p>
+                        <p>
+                            <strong>Contato:</strong> luizalabs@example.com | Telefone: +55 99 99999-9999<br>
+                        </p>
                     </div>
                 </body>
             </html>";

@@ -29,8 +29,7 @@ builder.Services.AddSingleton<IEmailService, EmailService>();
 
 builder.Services.AddFluentValidationAutoValidation();
 
-var appSettings = builder.Configuration.GetSection("Settings").Get<AppSettings>();
-AppSettings.Settings = appSettings!;
+builder.Services.Configure<AppSettings>(builder.Configuration);
 
 var app = builder.Build();
 

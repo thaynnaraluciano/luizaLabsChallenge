@@ -3,15 +3,23 @@ using System.Security.Claims;
 using System.Text;
 using CrossCutting.Configuration;
 using Infrastructure.Services.Interfaces.v1;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Infrastructure.Services.Services.v1
 {
     public class TokenService : ITokenService
     {
+        private readonly AppSettings _appSettings;
+
+        public TokenService(IOptions<AppSettings> appSettings)
+        {
+            _appSettings = appSettings.Value ?? throw new ArgumentNullException(nameof(appSettings));
+        }
+
         public string GenerateToken(string username)
         {
-            var jwtSettings = AppSettings.Settings.Jwt;
+            var jwtSettings = _appSettings.Jwt;
 
             var claims = new[]
             {
