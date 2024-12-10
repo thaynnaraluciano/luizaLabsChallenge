@@ -30,6 +30,7 @@ namespace Tests.Domain.Commands.v1.CreateUser
             _mockUserRepository = new Mock<IUserRepository>();
             _mockCryptographyService = new Mock<ICryptograpghyService>();
             _mockNotificationService = new Mock<INotificationService>();
+            _mockEmailTemplateService = new Mock<IEmailTemplateService>();
 
             return new CreateUserCommandHandler(
                 _loggerMock.Object, 
@@ -62,9 +63,9 @@ namespace Tests.Domain.Commands.v1.CreateUser
         {
             var command = CreateUserCommandMock.GetInvalidInstance(username, email, password);
 
-            var exception = Assert.Throws<ValidationException>(() =>
+            var exception = Assert.Throws<ValidationException>(async () =>
             {
-                ValidationBehavior.Handle(command, _nextMock.Object, CancellationToken.None);
+                await ValidationBehavior.Handle(command, _nextMock.Object, CancellationToken.None);
             });
 
             StringAssert.Contains("O username deve ser informado", exception.Message);

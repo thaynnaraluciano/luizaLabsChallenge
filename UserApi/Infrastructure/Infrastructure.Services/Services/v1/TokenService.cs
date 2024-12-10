@@ -19,26 +19,33 @@ namespace Infrastructure.Services.Services.v1
 
         public string GenerateToken(string username)
         {
-            var jwtSettings = _appSettings.Jwt;
-
-            var claims = new[]
+            try
             {
+                var jwtSettings = _appSettings.Jwt;
+
+                var claims = new[]
+                {
                 new Claim(JwtRegisteredClaimNames.Sub, username),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key));
+                var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var tokenDescriptor = new JwtSecurityToken(
-                issuer: jwtSettings.Issuer,
-                audience: jwtSettings.Audience,
-                claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(jwtSettings.ExpirationInMinutes),
-                signingCredentials: credentials
-            );
+                var tokenDescriptor = new JwtSecurityToken(
+                    issuer: jwtSettings.Issuer,
+                    audience: jwtSettings.Audience,
+                    claims: claims,
+                    expires: DateTime.UtcNow.AddMinutes(jwtSettings.ExpirationInMinutes),
+                    signingCredentials: credentials
+                );
 
-            return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
+                return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
+            }
+            catch (Exception ex) 
+            {
+                throw new Exception($"An error occurred while generating jwt token: {ex.Message}");
+            }
         }
     }
 }

@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CrossCutting", "CrossCuttin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrossCutting.Configuration", "CrossCutting\CrossCutting.Configuration\CrossCutting.Configuration.csproj", "{67870361-D0D8-4AAB-A449-D5358FF2F70A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrossCutting.Exceptions", "CrossCutting\CrossCutting.Exceptions\CrossCutting.Exceptions.csproj", "{48715C56-68B3-424F-980A-56E4656A9855}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{67870361-D0D8-4AAB-A449-D5358FF2F70A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67870361-D0D8-4AAB-A449-D5358FF2F70A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67870361-D0D8-4AAB-A449-D5358FF2F70A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48715C56-68B3-424F-980A-56E4656A9855}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48715C56-68B3-424F-980A-56E4656A9855}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48715C56-68B3-424F-980A-56E4656A9855}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48715C56-68B3-424F-980A-56E4656A9855}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,5 +72,6 @@ Global
 		{19A755AC-9408-4D80-BCE1-19E5B09B1231} = {52A27C96-3379-4ADB-86A1-9DCBE6515CE4}
 		{83B6D4F1-3104-43E6-8E96-6CC8E4199E0A} = {5C2621C1-FB29-4BFE-A084-AE0F07C7D065}
 		{67870361-D0D8-4AAB-A449-D5358FF2F70A} = {0B3FBCD3-AA12-43FA-98A4-19D81496DBC4}
+		{48715C56-68B3-424F-980A-56E4656A9855} = {0B3FBCD3-AA12-43FA-98A4-19D81496DBC4}
 	EndGlobalSection
 EndGlobal

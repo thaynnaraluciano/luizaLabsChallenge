@@ -24,7 +24,7 @@ namespace Infrastructure.Services.Services.v1
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error while sending confirmation email: {ex.Message}");
+                throw new Exception($"An error occurred while sending confirmation email: {ex.Message}");
             }
         }
     }

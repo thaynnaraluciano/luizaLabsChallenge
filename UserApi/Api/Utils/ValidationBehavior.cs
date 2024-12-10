@@ -6,7 +6,7 @@ namespace Api.Utils
 {
     public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
-        private readonly IValidator _validator;
+        private readonly IValidator<TRequest> _validator;
 
         public ValidationBehavior(IValidator<TRequest> validator)
         {

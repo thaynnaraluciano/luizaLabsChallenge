@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿using CrossCutting.Exceptions;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -22,18 +22,18 @@ namespace Domain.Commands.v1.ConfirmEmail
             var user = _userRepository.GetUserByVerificationCode(command.VerificationCode);
 
             if (user == null)
-                throw new UnauthorizedAccessException("Usuário não encontrado.");
+                throw new NotFoundException("Usuário não encontrado.");
 
             if (user.ConfirmedAt.HasValue)
-                throw new UnauthorizedAccessException("Este email já foi validado.");
+                throw new BadRequestException("Este email já foi validado.");
 
             if (string.Equals(user.VerificationCode, command.VerificationCode))
             {
                 user.ConfirmedAt = DateTime.Now;
                 await _userRepository.ConfirmUserEmail(user);
-            }
 
-            _logger.LogInformation("User email confirmed");
+                _logger.LogInformation("User email confirmed");
+            }
 
             return Unit.Value;
         }

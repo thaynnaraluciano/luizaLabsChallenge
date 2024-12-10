@@ -14,12 +14,15 @@ using Infrastructure.Services.Services.v1;
 using CrossCutting.Configuration;
 using Microsoft.Extensions.Options;
 using Domain.Commands.v1.ConfirmEmail;
+using CrossCutting.Exceptions.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 #region MediatR
 builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(CreateUserCommandHandler).Assembly));
@@ -33,6 +36,8 @@ builder.Services.AddAutoMapper(typeof(UserProfile));
 
 #region Validators
 builder.Services.AddScoped<IValidator<CreateUserCommand>, CreateUserCommandValidator>();
+//builder.Services.AddValidatorsFromAssemblyContaining<CreateUserCommandValidator>();
+
 builder.Services.AddScoped<IValidator<LoginCommand>, LoginCommandValidator>();
 builder.Services.AddScoped<IValidator<ConfirmEmailCommand>, ConfirmEmailCommandValidator>();
 #endregion
@@ -42,9 +47,6 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<ICryptograpghyService, CryptograpghyService>();
 builder.Services.AddSingleton<ITokenService, TokenService>();
 builder.Services.AddSingleton<IEmailTemplateService, EmailTemplateService>();
-
-builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 builder.Services.Configure<AppSettings>(builder.Configuration);
 
@@ -79,5 +81,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.Run();
