@@ -24,12 +24,12 @@ namespace Domain.Commands.v1.SendEmail
 
         public async Task<Unit> Handle(SendEmailCommand command, CancellationToken cancellationToken = default)
         {
-            _logger.LogInformation("Sending email");
+            _logger.LogInformation($"Sending email to {command.ReceiverEmail}");
 
             var request = _mapper.Map<EmailModel>(command);
             await _emailService.SendEmail(request);
 
-            _logger.LogInformation("Email sent");
+            _logger.LogInformation($"Email sent to {command.ReceiverEmail}");
             return Unit.Value;
         }
     }

@@ -39,6 +39,8 @@ namespace Domain.Commands.v1.Login
             if(!user.ConfirmedAt.HasValue)
                 throw new NotAuthorizedException("Validação de email pendente.");
 
+            _logger.LogInformation($"Generating jwt token for {command.UserName}");
+
             var token = _tokenService.GenerateToken(command.UserName!);
 
             _logger.LogInformation("Login ended successfully");

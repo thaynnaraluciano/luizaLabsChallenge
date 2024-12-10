@@ -22,10 +22,16 @@ namespace Domain.Commands.v1.ConfirmEmail
             var user = _userRepository.GetUserByVerificationCode(command.VerificationCode);
 
             if (user == null)
+            {
+                _logger.LogError("User not found at database");
                 throw new NotFoundException("Usuário não encontrado.");
+            }
 
             if (user.ConfirmedAt.HasValue)
+            {
+                _logger.LogError("User email is already confirmed");
                 throw new BadRequestException("Este email já foi validado.");
+            }
 
             if (string.Equals(user.VerificationCode, command.VerificationCode))
             {

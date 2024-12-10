@@ -46,7 +46,7 @@ namespace Domain.Commands.v1.CreateUser
 
             await _userRepository.CreateUser(userEntity);
 
-            _logger.LogInformation("Sending email confirmation");
+            _logger.LogInformation($"Sending email confirmation to {command.Email}");
 
             await _notificationService.SendEmail(new SendEmailModel()
             {
@@ -57,7 +57,7 @@ namespace Domain.Commands.v1.CreateUser
                 Body = _emailTemplateService.GenerateConfirmationEmail(command.UserName!)
             });
 
-            _logger.LogInformation("User created successfully");
+            _logger.LogInformation("Confirmation email was sent and user was created successfully");
             return Unit.Value;
         }
 

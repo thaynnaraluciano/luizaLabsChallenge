@@ -20,8 +20,7 @@ namespace Api.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreateUser(CreateUserCommand command)
         {
-            await _mediator.Send(command);
-            return Ok("Usuário cadastrado com sucesso!");
+            return Ok(await _mediator.Send(command));
         }
 
         [HttpPost("login")]
