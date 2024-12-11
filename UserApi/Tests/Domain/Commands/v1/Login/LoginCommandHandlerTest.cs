@@ -1,4 +1,5 @@
 ﻿using Api.Utils;
+using CrossCutting.Exceptions;
 using Domain.Commands.v1.Login;
 using FluentValidation;
 using Infrastructure.Data.Interfaces;
@@ -23,8 +24,8 @@ namespace Tests.Domain.Commands.v1.Login
 
         private LoginCommandHandler _handler;
 
-        private ValidationBehavior<LoginCommand, string> ValidationBehavior;
-        private Mock<RequestHandlerDelegate<string>> _nextMock;
+        private ValidationBehavior<LoginCommand, LoginCommandResponse> ValidationBehavior;
+        private Mock<RequestHandlerDelegate<LoginCommandResponse>> _nextMock;
 
         protected LoginCommandHandler EstablishContext()
         {
@@ -45,24 +46,18 @@ namespace Tests.Domain.Commands.v1.Login
         public void Setup()
         {
             _handler = EstablishContext();
-            ValidationBehavior = new ValidationBehavior<LoginCommand, string>(new LoginCommandValidator());
-            _nextMock = new Mock<RequestHandlerDelegate<string>>();
+            ValidationBehavior = new ValidationBehavior<LoginCommand, LoginCommandResponse>(new LoginCommandValidator());
+            _nextMock = new Mock<RequestHandlerDelegate<LoginCommandResponse>>();
         }
 
         [TestCase(Category = "Unit", TestName = "Should LoginCommandHandler handle command successfully")]
         public async Task Should_LoginCommandHandler_Handle_Success()
         {
-            var command = LoginCommandMock.GetValidInstance();
+            var command = LoginCommandMock.GetInstance("validUsername", "123Abc!@");
 
             var hashedPassword = "2404cbb78967d0674be472180d5cb8ee47177d33cac71ff3e9d443f44a7fe46a";
 
-            var userModel = new UserModel() 
-            { 
-                Email = "validEmail@gmail.com",
-                ConfirmedAt = DateTime.Now,
-                Password = hashedPassword,
-                UserName = "validUsername"
-            };
+            var userModel = UserModelMock.GetInstance("validEmail@gmail.com", DateTime.Now, hashedPassword, "validUsername");
 
             _mockUserRepository.Setup(x => x.GetUserByUsername(It.IsAny<string>())).Returns(userModel);
 
@@ -72,13 +67,14 @@ namespace Tests.Domain.Commands.v1.Login
 
             var result = await _handler.Handle(command);
 
-            Assert.That(result.GetType() == typeof(string));
+            Assert.That(result.GetType() == typeof(LoginCommandResponse));
+            Assert.That(result.Token, Is.EqualTo("validJwtToken"));
         }
 
         [TestCase("", "", Category = "Unit", TestName = "Should LoginCommandHandler handle command throw exception")]
-        public async Task Should_LoginCommandHandler_EmptyProps_Handle_Exception(string username, string password)
+        public void Should_LoginCommandHandler_EmptyProps_Handle_Exception(string username, string password)
         {
-            var command = LoginCommandMock.GetInvalidInstance(username, password);
+            var command = LoginCommandMock.GetInstance(username, password);
 
             var exception = Assert.Throws<ValidationException>(() =>
             {
@@ -87,6 +83,68 @@ namespace Tests.Domain.Commands.v1.Login
 
             StringAssert.Contains("O username deve ser informado", exception.Message);
             StringAssert.Contains("A senha deve ser informada", exception.Message);
+        }
+
+        [TestCase(Category = "Unit", TestName = "Should LoginCommandHandler not confirmed email command throw exception")]
+        public void Should_LoginCommandHandler_NotConfirmedEmail_Handle_Exception()
+        {
+            var command = LoginCommandMock.GetInstance("validUsername", "123Abc!@");
+
+            var hashedPassword = "2404cbb78967d0674be472180d5cb8ee47177d33cac71ff3e9d443f44a7fe46a";
+
+            var userModel = UserModelMock.GetInstance("validEmail@gmail.com", null, hashedPassword, "validUsername");
+
+            _mockUserRepository.Setup(x => x.GetUserByUsername(It.IsAny<string>())).Returns(userModel);
+
+            _mockCryptographyService.Setup(x => x.HashPassword(It.IsAny<string>())).Returns(hashedPassword);
+
+            var exception = Assert.ThrowsAsync<NotAuthorizedException>(async () =>
+            {
+                await _handler.Handle(command);
+            });
+
+            Assert.That(exception.Message, Is.EqualTo("Validação de email pendente."));
+        }
+
+        [TestCase(Category = "Unit", TestName = "Should LoginCommandHandler user not found command throw exception")]
+        public void Should_LoginCommandHandler_UserNotFound_Handle_Exception()
+        {
+            var command = LoginCommandMock.GetInstance("validUsername", "123Abc!@");
+
+            var hashedPassword = "2404cbb78967d0674be472180d5cb8ee47177d33cac71ff3e9d443f44a7fe46a";
+
+            _mockUserRepository.Setup(x => x.GetUserByUsername(It.IsAny<string>())).Returns((UserModel?)null);
+
+            _mockCryptographyService.Setup(x => x.HashPassword(It.IsAny<string>())).Returns(hashedPassword);
+
+            var exception = Assert.ThrowsAsync<NotAuthorizedException>(async () =>
+            {
+                await _handler.Handle(command);
+            });
+
+            Assert.That(exception.Message, Is.EqualTo("Usuário ou senha inválidos."));
+        }
+
+        [TestCase(Category = "Unit", TestName = "Should LoginCommandHandler wrong password command throw exception")]
+        public void Should_LoginCommandHandler_WrongPassword_Handle_Exception()
+        {
+            var command = LoginCommandMock.GetInstance("validUsername", "123Abc!@");
+
+            var hashedPassword = "2404cbb78967d0674be472180d5cb8ee47177d33cac71ff3e9d443f44a7fe46a";
+            var invalidHashedPassword = "invalidHashedPassword";
+
+            var userModel = UserModelMock.GetInstance("validEmail@gmail.com", null, hashedPassword, "validUsername");
+
+            _mockUserRepository.Setup(x => x.GetUserByUsername(It.IsAny<string>())).Returns(userModel);
+
+            _mockCryptographyService.Setup(x => x.HashPassword(It.IsAny<string>())).Returns(invalidHashedPassword);
+
+            var exception = Assert.ThrowsAsync<NotAuthorizedException>(async () =>
+            {
+                await _handler.Handle(command);
+            });
+
+            Assert.That(exception.Message, Is.EqualTo("Usuário ou senha inválidos."));
         }
     }
 }

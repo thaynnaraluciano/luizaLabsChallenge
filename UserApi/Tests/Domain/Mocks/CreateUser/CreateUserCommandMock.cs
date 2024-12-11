@@ -4,17 +4,7 @@ namespace Tests.Domain.Mocks.CreateUser
 {
     public class CreateUserCommandMock
     {
-        public static CreateUserCommand GetValidInstance()
-        {
-            return new CreateUserCommand()
-            {
-                UserName = "validUsername",
-                Email = "valid@email.com",
-                Password = "v@l1dPassword!"
-            };
-        }
-
-        public static CreateUserCommand GetInvalidInstance(string? username, string? email, string? password)
+        public static CreateUserCommand GetInstance(string? username, string? email, string? password)
         {
             return new CreateUserCommand()
             {
