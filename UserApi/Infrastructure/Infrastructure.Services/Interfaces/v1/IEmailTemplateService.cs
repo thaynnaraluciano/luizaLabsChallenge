@@ -2,6 +2,6 @@
 {
     public interface IEmailTemplateService
     {
-        string GenerateConfirmationEmail(string receiverName);
+        string GenerateConfirmationEmail(string receiverName, string verificationCode);
     }
 }

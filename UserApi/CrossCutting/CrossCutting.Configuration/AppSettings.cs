@@ -9,5 +9,7 @@ namespace CrossCutting.Configuration
         public JwtSettings Jwt { get; set; }
 
         public List<ServiceClientsSettings> ServiceClientsSettings { get; set; }
+
+        public NotificationSettings NotificationSettings { get; set; }
     }
 }

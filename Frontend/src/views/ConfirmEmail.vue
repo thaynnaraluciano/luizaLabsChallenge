@@ -33,11 +33,6 @@ onMounted(() => {
   const urlParams = new URLSearchParams(window.location.search);
   const verificationCode = urlParams.get('verificationCode');
 
-  // if (!verificationCode) {
-  //   message.value = 'Código de verificação não informado.';
-  //   return;
-  // }
-
   confirmEmail(verificationCode!);
 });
 

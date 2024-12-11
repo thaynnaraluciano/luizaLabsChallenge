@@ -54,7 +54,7 @@ namespace Domain.Commands.v1.CreateUser
                 ReceiverEmail = command.Email,
                 Subject = "Confirmação de email LuizaLabs",
                 BodyType = "html",
-                Body = _emailTemplateService.GenerateConfirmationEmail(command.UserName!)
+                Body = _emailTemplateService.GenerateConfirmationEmail(command.UserName!, userEntity.VerificationCode)
             });
 
             _logger.LogInformation("Confirmation email was sent and user was created successfully");
