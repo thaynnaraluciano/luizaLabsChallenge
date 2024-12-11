@@ -5,17 +5,17 @@ using Microsoft.AspNetCore.Mvc;
 namespace Api.Controllers
 {
     [ApiController]
-    [Route("api/v1/notification")]
-    public class NotificationController : ControllerBase
+    [Route("api/v1/email")]
+    public class EmailController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public NotificationController(IMediator mediator)
+        public EmailController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
-        [HttpPost("sendEmail")]
+        [HttpPost]
         public async Task<IActionResult> SendEmail(SendEmailCommand command)
         {
             await _mediator.Send(command);

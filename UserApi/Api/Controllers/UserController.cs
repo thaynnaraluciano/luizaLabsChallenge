@@ -17,14 +17,8 @@ namespace Api.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("create")]
+        [HttpPost]
         public async Task<IActionResult> CreateUser(CreateUserCommand command)
-        {
-            return Ok(await _mediator.Send(command));
-        }
-
-        [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginCommand command)
         {
             return Ok(await _mediator.Send(command));
         }

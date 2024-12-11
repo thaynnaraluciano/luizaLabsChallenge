@@ -12,7 +12,7 @@ namespace Infrastructure.Services.Services.v1
         public NotificationService(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _emailEndpoint = "api/v1/notification/sendEmail";
+            _emailEndpoint = "api/v1/email";
         }
 
         public async Task<bool> SendEmail(SendEmailModel request)

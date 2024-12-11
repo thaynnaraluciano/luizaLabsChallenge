@@ -30,7 +30,7 @@ const handleSubmit = async (event: Event) => {
   event.preventDefault()
 
   try {
-    const response = await fetch('http://localhost:4000/api/v1/user/create', {
+    const response = await fetch('http://localhost:4000/api/v1/user', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
