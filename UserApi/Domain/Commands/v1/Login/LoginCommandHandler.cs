@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Domain.Commands.v1.Login
 {
-    public class LoginCommandHandler : IRequestHandler<LoginCommand, string>
+    public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginCommandResponse>
     {
         private readonly ILogger<LoginCommandHandler> _logger;
 
@@ -26,7 +26,7 @@ namespace Domain.Commands.v1.Login
             _tokenService = tokenService;
         }
 
-        public async Task<string> Handle(LoginCommand command, CancellationToken cancellationToken = default)
+        public async Task<LoginCommandResponse> Handle(LoginCommand command, CancellationToken cancellationToken = default)
         {
             _logger.LogInformation("Starting user login");
 
@@ -45,7 +45,7 @@ namespace Domain.Commands.v1.Login
 
             _logger.LogInformation("Login ended successfully");
 
-            return token;
+            return new LoginCommandResponse(token);
         }
     }
 }

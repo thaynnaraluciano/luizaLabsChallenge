@@ -2,7 +2,7 @@
 
 namespace Domain.Commands.v1.Login
 {
-    public class LoginCommand : IRequest<string>
+    public class LoginCommand : IRequest<LoginCommandResponse>
     {
         public string? UserName { get; set; }
 
