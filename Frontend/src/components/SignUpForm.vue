@@ -118,7 +118,8 @@ const handleSubmit = async (event: Event) => {
       </button>
       <button
         type="submit"
-        class="w-full p-2 mt-4 bg-blue-500 text-white rounded-md shadow-sm hover:bg-blue-600 focus:outline-none">
+        :disabled="!passwordConfirmationIsValid"
+        class="w-full p-2 mt-4 bg-blue-500 text-white rounded-md shadow-sm hover:bg-blue-600 focus:outline-none disabled:bg-blue-300 disabled:cursor-not-allowed">
         Cadastrar
       </button>
     </div>

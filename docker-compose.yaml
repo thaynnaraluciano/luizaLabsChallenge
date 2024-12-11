@@ -21,13 +21,20 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - sql-server
+      - notification-api
     ports:
       - "4000:8080"
   notification-api:
     build:
       context: NotificationApi/
       dockerfile: Dockerfile
-    depends_on:
-      - sql-server
     ports:
       - "3000:8080"
+  frontend:
+    build:
+      context: Frontend/
+      dockerfile: Dockerfile 
+    depends_on:
+      - user-api
+    ports:
+      - "5173:80"
