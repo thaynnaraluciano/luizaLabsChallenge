@@ -396,3 +396,34 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Logs
+Frontend/logs
+*.log
+Frontend/npm-debug.log*
+Frontend/yarn-debug.log*
+Frontend/yarn-error.log*
+Frontend/pnpm-debug.log*
+Frontend/lerna-debug.log*
+
+Frontend/node_modules
+Frontend/.DS_Store
+Frontend/dist
+Frontend/dist-ssr
+Frontend/coverage
+*.local
+
+Frontend/cypress/videos/
+Frontend/cypress/screenshots/
+
+# Editor directories and files
+Frontend/.vscode/*
+Frontend/!.vscode/extensions.json
+Frontend/.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+*.tsbuildinfo
