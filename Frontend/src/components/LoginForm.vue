@@ -2,9 +2,12 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth';
+import { useToastStore } from '@/stores/toast';
+import FormInput from '@/components/FormInput.vue';
 
 const router = useRouter()
 const authStore = useAuthStore()
+const toastStore = useToastStore()
 const username = ref('')
 const password = ref('')
 
@@ -12,55 +15,51 @@ const handleSubmit = async (event: Event) => {
   event.preventDefault()
 
   try {
-    const response = await fetch('https://thaynnara.free.beeceptor.com/login', {
+    const response = await fetch('http://localhost:4000/api/v1/user/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        username: username.value,
+        userName: username.value,
         password: password.value
       }),
     })
 
+    const data = await response.json()
     if (response.ok) {
-      const data = await response.json()
       authStore.setToken(data.token)
-      router.push('/')
+      router.push({ name: 'Painel' })
     } else {
-      authStore.setErrorMessage('Usuário ou senha inválidos')
+      toastStore.showToast(data.Message, 'error')
     }
   } catch(error) {
-    authStore.setErrorMessage('Erro ao realizar login')
+    toastStore.showToast('Erro ao realizar login', 'error')
+    console.log(error)
   } finally {
-    username.value = ''
     password.value = ''
   }
 }
 </script>
 
 <template>
-  <div class="mb-4">
-    <p v-if="authStore.errorMessage" class="text-red-500 text-sm">{{ authStore.errorMessage }}</p>
-  </div>
   <form @submit="handleSubmit">
     <div class="mb-4">
-      <label for="username" class="block text-sm font-medium text-gray-700">Usuário</label>
-      <input
+      <FormInput
         v-model="username"
-        type="text"
+        label="Usuário"
         id="username"
         name="username"
-        class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+        required />
     </div>
     <div class="mb-4">
-      <label for="password" class="block text-sm font-medium text-gray-700">password</label>
-      <input
+      <FormInput
         v-model="password"
+        label="Senha"
         type="password"
         id="password"
         name="password"
-        class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+        required />
     </div>
     <button
       type="submit"

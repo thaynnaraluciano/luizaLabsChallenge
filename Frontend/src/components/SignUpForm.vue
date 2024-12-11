@@ -1,43 +1,26 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useToastStore } from '@/stores/toast';
+import FormInput from '@/components/FormInput.vue';
+import PasswordValidation from '@/components/PasswordValidation.vue';
 
+const router = useRouter()
+const toastStore = useToastStore()
 const username = ref('')
 const email = ref('')
 const password = ref('')
 const passwordConfirmation = ref('')
 
-const passwordStrength = computed(() => {
-  if (!password.value) return { message: '', color: '' }
-  const score = calcultePasswordScore(password.value)
-
-  const passwordStrengthMap = {
-    0: { message: 'Muito fraca', color: 'text-red-600' },
-    1: { message: 'Fraca', color: 'text-red-400' },
-    2: { message: 'Razoável', color: 'text-amber-600' },
-    3: { message: 'Boa', color: 'text-cyan-600' },
-    4: { message: 'Forte', color: 'text-green-300' },
-    5: { message: 'Muito forte', color: 'text-green-500' }
+interface ApiError {
+  Message: {
+    UserName: string[],
+    Email: string[],
+    Password: string[],
   }
-
-  return {
-    score,
-    ...passwordStrengthMap[score as keyof typeof passwordStrengthMap]
-  }
-})
-
-const calcultePasswordScore = (password: string) => {
-  let score = 0
-
-  if (password.length < 8) return 1
-  if (password.length >= 8) score++
-  if (password.length >= 12) score++
-  if (/[a-zA-Z]/.test(password) && /[0-9]/.test(password)) score++
-  if (/[A-Z]/.test(password) && /[a-z]/.test(password)) score++
-  if (/[^a-zA-Z0-9]/.test(password)) score++
-
-  return score
 }
+
+const errors = ref<ApiError>()
 
 const passwordConfirmationIsValid = computed(() => {
   return password.value === passwordConfirmation.value
@@ -46,12 +29,34 @@ const passwordConfirmationIsValid = computed(() => {
 const handleSubmit = async (event: Event) => {
   event.preventDefault()
 
-  console.log({
-    username: username.value,
-    email: email.value,
-    password: password.value,
-    passwordConfirmation: passwordConfirmation.value
-  })
+  try {
+    const response = await fetch('http://localhost:4000/api/v1/user/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        userName: username.value,
+        email: email.value,
+        password: password.value,
+      }),
+    })
+
+    const data = await response.json()
+    if (response.ok) {
+      toastStore.showToast('Usuário cadastrado com sucesso', 'success')
+      router.push({ name: 'Login' })
+    } else {
+      errors.value = data as ApiError
+      toastStore.showToast('Não foi possível completar o cadastro, verifique os erros indicados', 'error')
+    }
+  } catch (error) {
+    toastStore.showToast('Erro ao cadastrar usuário', 'error')
+    console.log(error)
+  } finally {
+    password.value = ''
+    passwordConfirmation.value = ''
+  }
 }
 </script>
 
@@ -59,23 +64,23 @@ const handleSubmit = async (event: Event) => {
   <form @submit="handleSubmit">
     <div class="grid grid-cols-2 gap-4">
       <div class="mb-4">
-        <label for="username" class="block text-sm font-medium text-gray-700">Usuário</label>
-        <input
+        <FormInput
           v-model="username"
-          type="text"
+          label="Usuário"
           id="username"
           name="username"
-          class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+          :error="errors?.Message?.UserName?.join(', ')"
+          required />
       </div>
       <div class="mb-4">
-        <label for="email" class="block text-sm font-medium text-gray-700">E-mail</label>
-        <input
+        <FormInput
           v-model="email"
-          type="email"
+          label="E-mail"
           id="email"
           name="email"
-          required
-          class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+          type="email"
+          :error="errors?.Message?.Email?.join(', ')"
+          required />
         <span 
           v-if="email && !email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)"
           class="text-xs text-red-600">
@@ -83,25 +88,24 @@ const handleSubmit = async (event: Event) => {
         </span>
       </div>
       <div class="mb-4">
-        <label for="password" class="block text-sm font-medium text-gray-700">Senha</label>
-        <input
+        <FormInput
           v-model="password"
-          type="password"
+          label="Senha"
           id="password"
           name="password"
-          class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-        <div>
-          <span :class="[passwordStrength.color]" class="text-sm">{{ passwordStrength.message }}</span>
-        </div>
+          type="password"
+          :error="errors?.Message?.Password?.join(', ')"
+          required />
+        <PasswordValidation :password="password" />
       </div>
       <div class="mb-4">
-        <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirmação de senha</label>
-        <input
+        <FormInput
           v-model="passwordConfirmation"
-          type="password"
+          label="Confirmação de senha"
           id="password_confirmation"
           name="password_confirmation"
-          class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+          type="password"
+          required />
         <span v-if="!passwordConfirmationIsValid && passwordConfirmation.length !== 0" class="text-xs text-red-600">Confirmação inválida</span>
       </div>
     </div>
@@ -109,12 +113,12 @@ const handleSubmit = async (event: Event) => {
       <button
         @click="() => $router.back()"
         type="button"
-        class="w-full p-2 mt-4 bg-gray-300 text-gray-700 rounded-md shadow-sm hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+        class="w-full p-2 mt-4 bg-gray-300 text-gray-700 rounded-md shadow-sm hover:bg-gray-400 focus:outline-none">
         Cancelar
       </button>
       <button
         type="submit"
-        class="w-full p-2 mt-4 bg-blue-500 text-white rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+        class="w-full p-2 mt-4 bg-blue-500 text-white rounded-md shadow-sm hover:bg-blue-600 focus:outline-none">
         Cadastrar
       </button>
     </div>

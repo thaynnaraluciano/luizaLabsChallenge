@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router';
 const router = useRouter()
 
 const redirectHome = () => {
-  router.push('/')
+  router.push({ name: 'Painel' })
 }
 </script>
 

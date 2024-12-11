@@ -8,7 +8,7 @@ import LoginForm from '../components/LoginForm.vue'
       <h2 class="text-2xl font-semibold text-center text-gray-700">Login</h2>
       <LoginForm />
       <p class="mt-4 text-center">
-        <RouterLink to="/sign_up" class="text-blue-500 hover:underline">Criar uma conta</RouterLink>
+        <RouterLink :to="{ name: 'SignUp' }" class="text-blue-500 hover:underline">Criar uma conta</RouterLink>
       </p>
     </div>
   </main>
