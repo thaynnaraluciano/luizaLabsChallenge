@@ -7,7 +7,7 @@ namespace Domain.Commands.v1.ConfirmEmail
         public ConfirmEmailCommandValidator()
         {
             RuleFor(x => x.VerificationCode)
-                .NotEmpty().WithMessage("VerificationCode deve ser informado");
+                .NotEmpty().WithMessage("O código de verificação deve ser informado");
         }
     }
 }

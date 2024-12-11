@@ -81,7 +81,7 @@ namespace Tests.Domain.Commands.v1.Login
                 ValidationBehavior.Handle(command, _nextMock.Object, CancellationToken.None);
             });
 
-            StringAssert.Contains("O username deve ser informado", exception.Message);
+            StringAssert.Contains("O usuário deve ser informado", exception.Message);
             StringAssert.Contains("A senha deve ser informada", exception.Message);
         }
 

@@ -67,7 +67,7 @@ namespace Tests.Domain.Commands.v1.ConfirmEmail
                 ValidationBehavior.Handle(command, _nextMock.Object, CancellationToken.None);
             });
 
-            StringAssert.Contains("VerificationCode deve ser informado", exception.Message);
+            StringAssert.Contains("O código de verificação deve ser informado", exception.Message);
         }
 
         [TestCase(Category = "Unit", TestName = "Should ConfirmEmailCommandHandler confirmed email command throw exception")]

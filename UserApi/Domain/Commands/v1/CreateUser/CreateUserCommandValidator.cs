@@ -13,9 +13,9 @@ namespace Domain.Commands.v1.CreateUser
             _userRepository = userRepository;
 
             RuleFor(user => user.UserName)
-                .NotEmpty().WithMessage("O username deve ser informado")
-                .MinimumLength(3).WithMessage("O username deve possuir pelo menos 3 caracteres")
-                .Must(BeAvailableUsername).WithMessage("O username informado não está disponível");
+                .NotEmpty().WithMessage("O usuário deve ser informado")
+                .MinimumLength(3).WithMessage("O usuário deve possuir pelo menos 3 caracteres")
+                .Must(BeAvailableUsername).WithMessage("O usuário informado não está disponível");
 
             RuleFor(user => user.Email)
                 .NotEmpty().WithMessage("O email deve ser informado")
@@ -24,12 +24,13 @@ namespace Domain.Commands.v1.CreateUser
 
             RuleFor(user => user.Password)
                 .NotEmpty().WithMessage("A senha deve ser informada")
-                .Must(BeValidPassword).WithMessage("A senha deve conter pelo menos 8 caracteres, incluindo caracteres maiúsculos, minúsculos, especiais e números");
+                .MinimumLength(8).WithMessage("A senha deve ter pelo menos 8 caracteres.")
+                .Must(BeValidPassword).WithMessage("A senha deve conter caracteres maiúsculos, minúsculos, especiais e números");
         }
 
         private bool BeValidPassword(string password)
         {
-            string pattern = @"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{8,}$";
+            string pattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()~_+\-=\[\]{};':""\\|,.<>\/?]).+$";
             return Regex.IsMatch(password, pattern);
         }
 

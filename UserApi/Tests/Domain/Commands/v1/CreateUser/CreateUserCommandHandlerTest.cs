@@ -68,7 +68,7 @@ namespace Tests.Domain.Commands.v1.CreateUser
                 ValidationBehavior.Handle(command, _nextMock.Object, CancellationToken.None);
             });
 
-            StringAssert.Contains("O username deve ser informado", exception.Message);
+            StringAssert.Contains("O usuário deve ser informado", exception.Message);
             StringAssert.Contains("O email deve ser informado", exception.Message);
             StringAssert.Contains("A senha deve ser informada", exception.Message);
         }
@@ -83,7 +83,7 @@ namespace Tests.Domain.Commands.v1.CreateUser
                 ValidationBehavior.Handle(command, _nextMock.Object, CancellationToken.None);
             });
 
-            StringAssert.Contains("O username deve possuir pelo menos 3 caracteres", exception.Message);
+            StringAssert.Contains("O usuário deve possuir pelo menos 3 caracteres", exception.Message);
         }
 
         [TestCase("unavailableUsername", "email@gmail.com", "str0ngPassword!", Category = "Unit", TestName = "Should CreateUserCommandHandler unavailable username command throw exception")]
@@ -98,7 +98,7 @@ namespace Tests.Domain.Commands.v1.CreateUser
                 ValidationBehavior.Handle(command, _nextMock.Object, CancellationToken.None);
             });
 
-            StringAssert.Contains("O username informado não está disponível", exception.Message);
+            StringAssert.Contains("O usuário informado não está disponível", exception.Message);
         }
 
         [TestCase("availableUsername", "invalidEmail", "str0ngPassword!", Category = "Unit", TestName = "Should CreateUserCommandHandler invalid email command throw exception")]
@@ -139,7 +139,7 @@ namespace Tests.Domain.Commands.v1.CreateUser
                 ValidationBehavior.Handle(command, _nextMock.Object, CancellationToken.None);
             });
 
-            StringAssert.Contains("A senha deve conter pelo menos 8 caracteres, incluindo caracteres maiúsculos, minúsculos, especiais e números", exception.Message);
+            StringAssert.Contains("A senha deve conter caracteres maiúsculos, minúsculos, especiais e números", exception.Message);
         }
     }
 }
