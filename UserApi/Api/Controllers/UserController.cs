@@ -29,7 +29,7 @@ namespace Api.Controllers
             return Ok(await _mediator.Send(command));
         }
 
-        [HttpPost("confirmEmail")]
+        [HttpPut("confirmEmail")]
         public async Task<IActionResult> ConfirmEmail(ConfirmEmailCommand command)
         {
             return Ok(await _mediator.Send(command));
