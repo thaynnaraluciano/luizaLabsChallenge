@@ -2,6 +2,10 @@
 
 Esta aplicação é um desafio técnico da empresa LuizaLabs e consiste em uma tela de login com as funcionalidades de cadastro de usuário, avaliação de segurança de senha, controle de logs e tratamento de exceções.
 
+![image](https://github.com/user-attachments/assets/42de2014-6ce0-495e-990a-cfa2d3a9edc1)
+
+![image](https://github.com/user-attachments/assets/d59cc38a-05c9-4cec-a887-1cf53f39293f)
+
 ## O desafio
 ### Tela de Login
 * Permitir que o usuário insira seu nome de usuário e senha
