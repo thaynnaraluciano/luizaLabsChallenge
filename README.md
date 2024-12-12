@@ -50,6 +50,10 @@ Para executar a aplicação em ambiente local, siga os passos a seguir:
     docker compose up -d --build
     ```
 * Com os containers rodando, será possível acessar a aplicação pelo navegador. O endereço padrão definido é http://localhost:5173
+* Para parar a execução da aplicação, execute o comando abaixo no mesmo diretório em que foi executado o comando para iniciar a execução:
+    ```
+    docker compose down
+    ```
 
 ### Configurando o MailTrap
 * Acesse o [MailTrap]("https://mailtrap.io/")
