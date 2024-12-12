@@ -44,7 +44,7 @@ Para executar a aplicação em ambiente local, siga os passos a seguir:
     ```
     cd luizaLabsChallenge
     ```
-* Abra a solution *NotificationApi.sln* (disponível em: luizaLabsChallenge/NotificationApi) com o Visual Studio e preencha as credenciais do servidor SMTP no arquivo *appsettings.json*, localizado na camada de Presentation, no projeto Api.csproj. Para ambiente de desenvolvimento, sugiro a utilização da ferramenta [mailTrap](https://mailtrap.io/). A próxima seção contém as instruções para utilização do mailTrap.
+* Abra a solution *NotificationApi.sln* (disponível em: *luizaLabsChallenge/NotificationApi*) com o Visual Studio e preencha as credenciais do servidor SMTP no arquivo *appsettings.json*, localizado na camada de *Presentation*, no projeto *Api.csproj*. Para ambiente de desenvolvimento, sugiro a utilização da ferramenta [mailTrap](https://mailtrap.io/). O mailTrap é um serviço para teste de envio de e-mails e a próxima seção contém as instruções para sua utilização.
 * Execute o comando abaixo para executar os containers do projeto: 
     ```
     docker compose up -d --build
@@ -56,10 +56,10 @@ Para executar a aplicação em ambiente local, siga os passos a seguir:
     ```
 
 ### Configurando o MailTrap
-* Acesse o [MailTrap]("https://mailtrap.io/")
+* Acesse o [MailTrap](https://mailtrap.io/)
 * Crie uma conta na ferramenta e faça login
 * Na tela inicial da ferramenta clique em "Start testing" na seção "EmailTesting"
-* Serão exibidas na tela as credenciais do servidor SFTP. Estas são as informações que devem ser informadas no appsettings.json
+* Serão exibidas na tela as credenciais do servidor SFTP. Estas são as informações que devem ser informadas no arquivo *appsettings.json*
 * Nesta mesma tela, serão exibidos os emails que forem enviados durante os testes da aplicação
 
 ## Escolhas de desenvolvimento
