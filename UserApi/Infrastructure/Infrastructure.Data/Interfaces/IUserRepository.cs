@@ -15,5 +15,7 @@ namespace Infrastructure.Data.Interfaces
         UserModel? GetUserByVerificationCode(string?  verificationCode);
 
         Task ConfirmUserEmail(UserModel user);
+
+        UserModel? GetUserByEmail(string? email);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Infrastructure.Data.Models;
 
-namespace Tests.Domain.Mocks.Login
+namespace Tests.Domain.Mocks
 {
     public class UserModelMock
     {

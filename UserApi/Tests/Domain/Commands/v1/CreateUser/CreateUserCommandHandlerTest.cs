@@ -2,6 +2,7 @@
 using Domain.Commands.v1.CreateUser;
 using FluentValidation;
 using Infrastructure.Data.Interfaces;
+using Infrastructure.Data.Models;
 using Infrastructure.Services.Interfaces.v1;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -53,6 +54,9 @@ namespace Tests.Domain.Commands.v1.CreateUser
         public async Task Should_CreateUserCommandHandler_Handle_Success()
         {
             var command = CreateUserCommandMock.GetInstance("validUsername", "valid@email.com", "v@l1dPassword!");
+
+            _mockNotificationService.Setup(x => x.SendEmail(It.IsAny<SendEmailModel>())).ReturnsAsync(true);
+
             var result = await _handler.Handle(command);
 
             Assert.That(result == Unit.Value);

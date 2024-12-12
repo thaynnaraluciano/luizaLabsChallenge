@@ -14,6 +14,7 @@ using CrossCutting.Configuration;
 using Microsoft.Extensions.Options;
 using Domain.Commands.v1.ConfirmEmail;
 using CrossCutting.Exceptions.Middlewares;
+using Domain.Commands.v1.SendEmailConfirmation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +39,7 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBeh
 builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(CreateUserCommandHandler).Assembly));
 builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(LoginCommandHandler).Assembly));
 builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(ConfirmEmailCommandHandler).Assembly));
+builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(SendEmailConfirmationCommand).Assembly));
 #endregion
 
 #region AutoMapper
@@ -48,6 +50,7 @@ builder.Services.AddAutoMapper(typeof(UserProfile));
 builder.Services.AddScoped<IValidator<CreateUserCommand>, CreateUserCommandValidator>();
 builder.Services.AddScoped<IValidator<LoginCommand>, LoginCommandValidator>();
 builder.Services.AddScoped<IValidator<ConfirmEmailCommand>, ConfirmEmailCommandValidator>();
+builder.Services.AddScoped<IValidator<SendEmailConfirmationCommand>, SendEmailConfirmationCommandValidator>();
 #endregion
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();

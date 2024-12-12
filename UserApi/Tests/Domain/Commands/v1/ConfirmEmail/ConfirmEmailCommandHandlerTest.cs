@@ -7,8 +7,8 @@ using Infrastructure.Data.Models;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Moq;
+using Tests.Domain.Mocks;
 using Tests.Domain.Mocks.ConfirmEmail;
-using Tests.Domain.Mocks.Login;
 
 namespace Tests.Domain.Commands.v1.ConfirmEmail
 {

@@ -38,6 +38,14 @@ namespace Infrastructure.Data.Repositories
             return null;
         }
 
+        public UserModel? GetUserByEmail(string? email)
+        {
+            if (email != null)
+                return _dbContext.Users.FirstOrDefault(x => string.Equals(x.Email, email));
+
+            return null;
+        }
+
         public UserModel? GetUserByVerificationCode(string? verificationCode)
         {
             if (verificationCode != null)

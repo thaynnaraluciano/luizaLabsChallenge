@@ -1,6 +1,5 @@
 ﻿using Domain.Commands.v1.ConfirmEmail;
 using Domain.Commands.v1.CreateUser;
-using Domain.Commands.v1.Login;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
