@@ -55,7 +55,13 @@ const router = createRouter({
       name: 'ConfirmEmail',
       component: () => import('../views/ConfirmEmail.vue'),
       meta: { requiresAuth: false },
-    }
+    },
+    {
+      path: '/resend_email_confirmation',
+      name: 'ResendEmailConfirmation',
+      component: () => import('@/views/ResendEmailConfirmation.vue'),
+      meta: { requiresAuth: false },
+    },
   ],
 })
 
